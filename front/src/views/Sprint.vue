@@ -2,17 +2,7 @@
   <div class="sprint">
     <v-container>
       <SprintCreate />
-      <v-row>
-        <v-col>
-
-        </v-col>
-        <v-col>
-          
-        </v-col>
-      </v-row>
-      <h1>
-          sprint
-      </h1>
+      <SprintList />
     </v-container>
     
   </div>
@@ -20,11 +10,13 @@
 
 <script>
 import SprintCreate from "@/components/sprint/SprintCreate.vue";
+import SprintList from "@/components/sprint/SprintList.vue";
 
 export default {
     name: "Sprint",
     components: {
       SprintCreate,
+      SprintList
     }
 
 }
