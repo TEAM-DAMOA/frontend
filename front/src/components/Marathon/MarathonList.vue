@@ -14,18 +14,43 @@
           <v-divider></v-divider>
           <div v-for="(content, index) in card.contents" :key="index">
             <v-row>
-              <v-col>
+              <v-col cols="8">
                 <h5>{{ content }}</h5>
                 <small>리워드 {{ card.dayMoney }}원</small>
               </v-col>
               <!-- <v-col><v-btn depressed ><h4>완료</h4></v-btn></v-col> -->
-              <v-col>
+              <v-col cols="1">
                 <div v-if="index%2">
                   <v-icon class="check-icon">mdi-check-circle-outline</v-icon>
                 </div>
                 <div v-else>
                   <v-icon class="check-icon">mdi-check-circle</v-icon>
                 </div>
+              </v-col>
+              <v-col cols="3">
+                <v-menu
+                  bottom
+                  offset-y
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon
+                    class="more-btn ma-2"
+                    v-bind="attrs"
+                    v-on="on">
+                    mdi-dots-vertical
+                    </v-icon>
+                
+                  </template>
+                  <v-list>
+                    <v-list-item
+                      v-for="(item, i) in items"
+                      :key="i"
+                      @click="() => {}"
+                    >
+                      <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
               </v-col>
             </v-row>
           </div>
@@ -40,6 +65,15 @@ export default {
     name: "MarathonList",
     data() {
       return {
+        items: [
+          {
+            title: '수정',
+          },
+          {
+            title: '삭제',
+          },
+          
+        ],
         colors: ["#D1C4E9", "#C5CAE9", "#B2DFDB", "#FFCDD2", "#E1BEE7", "#F8BBD0"],
         cards: [
           {
@@ -79,6 +113,9 @@ export default {
   height: 60px;
 }
 .check-icon {
+  cursor: pointer;
+}
+.more-btn {
   cursor: pointer;
 }
 </style>

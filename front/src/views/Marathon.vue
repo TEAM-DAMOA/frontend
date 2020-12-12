@@ -7,7 +7,41 @@
       <h2 class="anounce">진행중인 마라톤 {{ marathonCount}}개 </h2>
       <h3 class="anounce">오늘의 총 {{ successCount }} 성공!</h3>
       <v-col>
-        <h5 class="aim-price">목표 금액 {{ aimPrice }}원</h5>
+        <h5 class="aim-price">목표 금액 {{ aimPrice }}원 
+          <v-icon class="cursor-change" @click="dialog = true">mdi-pencil</v-icon>
+        </h5>
+        <v-dialog
+          v-model="dialog"
+          max-width="400px"
+        >
+          <v-card>
+            <v-container>
+              <v-card-title>
+                <h3>목표 금액 수정</h3>
+              </v-card-title>
+              <v-text-field
+                v-model="aimPrice"
+                @keydown.enter="dialog = false"
+              ></v-text-field>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  text
+                  @click="dialog = false"
+                >
+                  닫기
+                </v-btn>
+                <v-btn
+                  color="primary"
+                  text
+                  @click="dialog = false"
+                >
+                  저장
+                </v-btn>
+              </v-card-actions>
+            </v-container>
+          </v-card>
+        </v-dialog>
         <v-progress-linear
           class="mt-3 mr-4"
           :value=value
@@ -36,12 +70,17 @@ export default {
     MarathonCreate,
     MarathonList
   },
+  methods: {
+    changeAimPrice() {
+    }
+  },
   data() {
     return {
       value: 60,
       aimPrice: 100000,
       successCount: 0,
-      marathonCount: 3
+      marathonCount: 3,
+      dialog: false
     }
   },
 }
@@ -70,5 +109,8 @@ export default {
 .anounce {
   padding-top: 10px;
   /* text-align: start; */
+}
+.cursor-change {
+  cursor: pointer;
 }
 </style>

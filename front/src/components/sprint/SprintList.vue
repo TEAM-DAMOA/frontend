@@ -22,7 +22,7 @@
               class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal display-3 white--text"
               style="height: 100%;"
             >
-            {{ card.progressPercent }}%
+            {{ card.progress }}%
             </div>
           </v-expand-transition>
           </v-img>
@@ -42,15 +42,69 @@
 
           <v-expand-transition>
             <div v-show="card.show">
-              <v-divider></v-divider>
+              <v-divider class="mt-4"></v-divider>
+            <v-row
+              class="my-1"
+              align="center"
+            >
+              <strong class="mx-5 info--text text--darken-2">
+                진행중 {{ card.remainingTasks }}
+              </strong>
 
-              <v-card-text v-for="(todo, index) in card.toDoList" :key="index">
-                <v-checkbox
-                  v-model="todo.check"
-                  :label="todo.do"
-                ></v-checkbox>
-              </v-card-text>
-            </div>
+              <v-divider vertical></v-divider>
+
+              <strong class="mx-4 success--text text--darken-2">
+                완료 {{ card.completedTasks }}
+              </strong>
+
+              <v-spacer></v-spacer>
+
+              <v-progress-circular
+                :value="card.progress"
+                class="mr-7"
+              ></v-progress-circular>
+            </v-row>
+
+            <v-card v-if="card.toDoList.length">
+              <v-slide-y-transition
+                class="py-0"
+                group
+                tag="v-list"
+              >
+                <template v-for="(todo, i) in card.toDoList">
+                  <v-list-item :key=i>
+                    <v-list-item-action>
+                      <v-checkbox
+                       @click="changeCheck(index)"
+                        v-model="todo.check"
+                        :color="todo.check && 'grey' || 'primary'"
+                      >
+                        <template v-slot:label>
+                          <div
+                            :class="todo.check && 'grey--text' || 'primary--text'"
+                            class="ml-4"
+                            v-text="todo.title"
+                          ></div>
+                        </template>
+                      </v-checkbox>
+                    </v-list-item-action>
+
+                    <v-spacer></v-spacer>
+
+                   <v-scroll-x-transition>
+                      <v-icon
+                        v-if="todo.check"
+                        color="primary"
+                      >
+                        mdi-check
+                      </v-icon>
+                    </v-scroll-x-transition>
+                  </v-list-item>
+                </template>
+              </v-slide-y-transition>
+            </v-card>
+            </div> 
+
           </v-expand-transition>
         </v-card>
       </v-hover>
@@ -62,30 +116,48 @@
 <script>
 export default {
   name: "SprintList",
+  created() {
+    for (let i = 0; i < this.cards.length; i++) {
+      this.cards[i].completedTasks = this.cards[i].toDoList.filter(todo => todo.check).length
+      this.cards[i].progress = this.cards[i].completedTasks / this.cards[i].toDoList.length * 100
+      this.cards[i].remainingTasks = this.cards[i].toDoList.length - this.cards[i].completedTasks
+    }
+  },
+  methods: {
+    changeCheck(i) {
+      this.cards[i].completedTasks = this.cards[i].toDoList.filter(todo => todo.check).length
+      this.cards[i].progress = this.cards[i].completedTasks / this.cards[i].toDoList.length * 100
+      this.cards[i].remainingTasks = this.cards[i].toDoList.length - this.cards[i].completedTasks
+    }
+  },
   data() {
     return {
       colors: ["#D1C4E9", "#C5CAE9", "#B2DFDB", "#FFCDD2", "#E1BEE7", "#F8BBD0"],
       cards: [
         {
           productName: '노트북',
+          completedTasks: null,
+          progress: null,
+          remainingTasks: null,
           productPrice: 20000000,
           img: 'https://user-images.githubusercontent.com/60081201/101981507-d4617700-3cb0-11eb-9448-a61fef887e2d.JPG',
           toDoList: [
-            { do: "할일 1", check: "true"},
-            { do: "할일 2", check: "false"}
+            { title: "할일 1", check: true},
+            { title: "할일 2", check: false}
           ],
-          progressPercent: 50,
           show: false
         },
         {
           productName: '핸드폰',
+          completedTasks: null,
+          progress: null,
+          remainingTasks: null,
           productPrice: 6000000,
           img: 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg',
           toDoList: [
-            { do: "할일 1", check: "false"},
-            { do: "할일 2", check: "false"}
+            { title: "할일 1", check: false},
+            { title: "할일 2", check: false}
           ],
-          progressPercent: 30,
           show: false
         }
       ],
