@@ -14,8 +14,19 @@
           <v-divider></v-divider>
           <div v-for="(content, index) in card.contents" :key="index">
             <v-row>
-              <v-col><h5>{{ content }}</h5></v-col>
-              <v-col><v-btn depressed ><h4>완료</h4></v-btn></v-col>
+              <v-col>
+                <h5>{{ content }}</h5>
+                <small>리워드 {{ card.dayMoney }}원</small>
+              </v-col>
+              <!-- <v-col><v-btn depressed ><h4>완료</h4></v-btn></v-col> -->
+              <v-col>
+                <div v-if="index%2">
+                  <v-icon class="check-icon">mdi-check-circle-outline</v-icon>
+                </div>
+                <div v-else>
+                  <v-icon class="check-icon">mdi-check-circle</v-icon>
+                </div>
+              </v-col>
             </v-row>
           </div>
         </v-card>
@@ -37,21 +48,24 @@ export default {
             contents: [
               "3끼 챙겨먹기",
               "팔굽혀펴기 20회"
-            ]
+            ],
+            dayMoney: 2000
           },
           {
             title: '규칙적으로 생활하기',
             contents: [
               "6시전 기상하기",
               "자기전 명상하기"
-            ]
+            ],
+            dayMoney: 1000
           },
           {
             title: '마라톤 카테고리명',
             contents: [
               "습관1",
               "습관2"
-            ]
+            ],
+            dayMoney: 600
           },
         ],
       }
@@ -64,5 +78,8 @@ export default {
 .card-title {
   padding-top: 10px;
   height: 60px;
+}
+.check-icon {
+  cursor: pointer;
 }
 </style>
