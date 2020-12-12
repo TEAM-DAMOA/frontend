@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import MarathonCreate from "@/components/Marathon/MarathonCreate.vue";
-import MarathonList from "@/components/Marathon/MarathonList.vue";
+import MarathonCreate from "@/components/marathon/MarathonCreate.vue";
+import MarathonList from "@/components/marathon/MarathonList.vue";
 
 export default { 
   name: "Marathon",

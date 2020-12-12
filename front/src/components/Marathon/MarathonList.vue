@@ -2,19 +2,20 @@
   <v-container fluid>
     <v-row dense>
       <v-col
-        v-for="card in cards"
-        :key="card.title"
+        v-for="(card, index) in cards"
+        :key=index
         :cols="4"
       >
         <v-card
-        min-height="200px"
+          min-height="200px"
+          :color=colors[index%6]
         >
           <h4 class="card-title">{{ card.title }}</h4>
           <v-divider></v-divider>
           <div v-for="(content, index) in card.contents" :key="index">
             <v-row>
               <v-col><h5>{{ content }}</h5></v-col>
-              <v-col><v-btn outlined color="primary"><h4>완료</h4></v-btn></v-col>
+              <v-col><v-btn depressed ><h4>완료</h4></v-btn></v-col>
             </v-row>
           </div>
         </v-card>
@@ -29,6 +30,7 @@ export default {
     name: "MarathonList",
     data() {
       return {
+        colors: ["#D1C4E9", "#C5CAE9", "#B2DFDB", "#FFCDD2", "#E1BEE7", "#F8BBD0"],
         cards: [
           {
             title: '건강한 나를 위해 운동과 식습관을 조절하자',
