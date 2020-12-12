@@ -12,9 +12,11 @@
           class="mx-auto"
           max-width="344"
         >
+        <div v-if="card.progress >= 90">
           <v-img
             :src="card.img"
             height="200px"
+            style="filter:opacity(card.progress/100))"
           >
           <v-expand-transition>
             <div
@@ -26,7 +28,43 @@
             </div>
           </v-expand-transition>
           </v-img>
+        </div>
+        <div v-else-if="card.progress >= 50">
+          <v-img
+            :src="card.img"
+            height="200px"
+            style="opacity:0.5"
+          >
+          <v-expand-transition>
+            <div
+              v-if="hover"
+              class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal display-3 white--text"
+              style="height: 100%;"
+            >
+            {{ card.progress }}%
+            </div>
+          </v-expand-transition>
+          </v-img>
+        </div>
+        <div v-else>
+          <v-img
+            :src="card.img"
+            height="200px"
+            style="opacity:0.3"
+          >
+          <v-expand-transition>
+            <div
+              v-if="hover"
+              class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal display-3 white--text"
+              style="height: 100%;"
+            >
+            {{ card.progress }}%
+            </div>
+          </v-expand-transition>
+          </v-img>
+        </div>
 
+          
           <h4 class="mt-3">{{ card.productName }}</h4>
           <h5>목표금액 : {{ card.productPrice }}원</h5>
 

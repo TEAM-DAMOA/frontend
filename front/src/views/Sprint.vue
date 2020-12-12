@@ -24,7 +24,7 @@ export default {
 
 <style>
 .sprint {
-  background-image: url("https://user-images.githubusercontent.com/60081201/101985843-bfdfa780-3ccd-11eb-824c-8298173cf418.jpg");
+  background-image: url("https://user-images.githubusercontent.com/60081201/101987178-d558cf80-3cd5-11eb-8920-87610c0166e6.jpg");
   background-attachment: fixed;
   /* background-origin: border-box; */
   background-position: top;
