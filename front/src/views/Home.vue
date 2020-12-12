@@ -1,47 +1,21 @@
 <template>
   <div class="home">
-    <v-container>
-      <v-row class="mt-5">
-        <v-col cols="5">
-          <h3 class="col-background">달성 완료</h3>
-          <div class="content">
-            <v-card
-              class="mx-auto"
-              max-width="344"
-            >
-              <v-card-text>
-                <h5>학습 스프린트</h5>
-                <h4>정처기 하루에 3시간씩 공부</h4>
-                <p>2020.10.24 ~ 2020.11.24</p>
-              </v-card-text>
-            </v-card>
-          </div>
-          
-        </v-col>
-        <v-col>
-          <h3 class="col-background">진행중인 마라톤</h3>
-          <div class="content">
-            <v-card
-              class="mx-auto"
-              max-width="230"
-            >
-              <v-card-text>
-                <h5>운동 마라톤</h5>
-                <h4>하루에 스쿼트 3세트</h4>
-              </v-card-text>
-            </v-card>
-
-          </div>
-        </v-col>
-        <v-col>
-          <h3 class="col-background">진행중인 스프린트</h3>
-          <div class="content">
-
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
-
+    <div class="intro">
+      <v-img src="https://user-images.githubusercontent.com/60081201/101991780-3b535000-3cf2-11eb-9c88-9d5de25d2dea.png"/>
+    </div>
+    <div class="down-icon">
+      <v-icon x-large dark @click="goDown">mdi-arrow-down-circle-outline</v-icon>
+    </div>
+    <div>
+      <v-img src="https://user-images.githubusercontent.com/60081201/101993663-b40cd900-3cff-11eb-8138-4ecb3b5a6e1b.JPG" />
+    </div>
+    <div class="down-icon2">
+      <v-icon x-large dark @click="goDown2">mdi-arrow-down-circle-outline</v-icon>
+    </div>
+    <div class="intro-function">
+      <v-img src="https://user-images.githubusercontent.com/60081201/101995027-42865800-3d0a-11eb-8935-95f15036a409.JPG" />
+      <v-container><v-btn dark @click="$router.push({ path: '/mypage' })"><h2>이용하기</h2></v-btn></v-container>
+    </div>
   </div>
 </template>
 
@@ -50,34 +24,37 @@
 
 export default {
   name: 'Home',
+  methods: {
+    goDown() {
+      window.scroll({top:780, behavior: 'smooth'})
+    },
+    goDown2() {
+      window.scroll({top:1280, behavior: 'smooth'})
+    }
+  }
  
 }
 </script>
 
 <style>
-.home {
-  background-image: url("https://user-images.githubusercontent.com/60081201/101930243-3d96ab00-3c1b-11eb-8281-7f0dab30b6f3.jpg");
-  background-attachment: fixed;
-  background-origin: border-box;
-  background-position: top;
-  background-repeat: no-repeat;
-  background-size: cover;
-  min-height: 100vh;
-  text-align: center;
+.intro {
+  width: 100%;
 }
-.col-background {
-  height: 50px;
-  padding-top: 12px;
-  margin-bottom: 10px;
-  background-color: whitesmoke;
-  background-color: rgba( 255, 255, 255, 0.5 );
+.down-icon {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  cursor: pointer;
 }
-
-.content {
-  height: 50px;
-  padding-top: 12px;
-  min-height: 344px;
-  background-color: whitesmoke;
-  background-color: rgba( 255, 255, 255, 0.5 );
+.intro-function {
+  height: 800px;
+  background-color: black;
+  color: whitesmoke;
+}
+.down-icon2 {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  cursor: pointer;
 }
 </style>

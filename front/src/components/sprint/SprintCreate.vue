@@ -19,6 +19,7 @@
       <v-card>
         <v-card-title>
         <h3>새 스프린트 만들기</h3>
+        <!-- {{newSprint}} -->
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -33,7 +34,7 @@
               hint="ex) 한 달 안으로 구입하겠다."
               label="내용"
               required
-              v-model="newSprint.title"
+              v-model="newSprint.content"
             ></v-text-field>
 
             <div class="box">
@@ -82,13 +83,19 @@
               </v-simple-table>
             </div>
 
-            <p class="mt-3">제품 이미지</p>
-            <input type="file" @change="previewImage" accept="image/*" />
-            <small>선택사항입니다.</small>
+            <!-- <p class="mt-3">제품 이미지</p> -->
+            <v-file-input
+              accept="image/*"
+              label="제품 사진"
+              @change="selectFile"
+              hint="선택사항입니다."
+            ></v-file-input>
+            <!-- <input type="file" @change="previewImage" accept="image/*" /> -->
             
             <v-text-field
               v-model="newSprint.sGoalMoney"
               label="제품 가격"
+              hint="목표 금액을 의미합니다."
             ></v-text-field>
      
            
@@ -141,11 +148,14 @@
 </template>
 
 <script>
-import firebase from "firebase";
+// import firebase from "firebase";
 
 export default {
   name: "SprintCreate",
   methods: {
+    selectFile(file) {
+      this.newSprint.image = "http://k3a301.p.ssafy.io:8000/images/" + file.name
+    },
     create () {
       if (this.newTask && this.newReward) {
         this.newSprint.todoList.push({
@@ -160,44 +170,44 @@ export default {
         alert("할 일을 입력해주세요.")
       }
     },
-    previewImage(event) {
-      this.uploadValue = 0;
-      this.picture = null;
-      this.imageData = event.target.files[0];
-      this.onUpload();
-    },
-    onUpload() {
-      this.picture = null;
-      const storageRef = firebase
-        .storage()
-        .ref(`${this.imageData.name}`)
-        .put(this.imageData);
-      storageRef.on(
-        `state_changed`,
-        (snapshot) => {
-          this.uploadValue =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        },
-        (error) => {
-          console.error(error.message);
-        },
-        () => {
-          this.uploadValue = 100;
-          storageRef.snapshot.ref.getDownloadURL().then((url) => {
-            this.picture = url;
-            this.newSprint.image = url;
-          });
-        }
-      );
-    },
+    // previewImage(event) {
+    //   this.uploadValue = 0;
+    //   this.picture = null;
+    //   this.imageData = event.target.files[0];
+    //   this.onUpload();
+    // },
+    // onUpload() {
+    //   this.picture = null;
+    //   const storageRef = firebase
+    //     .storage()
+    //     .ref(`${this.imageData.name}`)
+    //     .put(this.imageData);
+    //   storageRef.on(
+    //     `state_changed`,
+    //     (snapshot) => {
+    //       this.uploadValue =
+    //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //     },
+    //     (error) => {
+    //       console.error(error.message);
+    //     },
+    //     () => {
+    //       this.uploadValue = 100;
+    //       storageRef.snapshot.ref.getDownloadURL().then((url) => {
+    //         this.picture = url;
+    //         this.newSprint.image = url;
+    //       });
+    //     }
+    //   );
+    // },
   },
   data() {
     return {
       newTask: null,
       newReward: null,
-      picture: null,
-      uploadValue: 0,
-      imageData: null,
+      // picture: null,
+      // uploadValue: 0,
+      // imageData: null,
       dialog: false,
       menu: false,
       newSprint: {

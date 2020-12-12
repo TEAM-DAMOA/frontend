@@ -1,6 +1,5 @@
 <template>
     <v-container fluid>
-      
     <v-row dense>
       <v-col
         v-for="(card, index) in cards"
@@ -63,19 +62,18 @@
           </v-expand-transition>
           </v-img>
         </div>
-
-          
-          <h4 class="mt-3">{{ card.productName }}</h4>
+          <h4 class="mt-3">{{ card.productName }} </h4>
           <h5>목표금액 : {{ card.productPrice }}원</h5>
 
-          <v-card-actions class="detail-cursor" @click="card.show = !card.show">
-            <v-btn
+          <v-card-actions class="detail-cursor">
+            <v-btn @click="card.show = !card.show"
               icon
             >
               <v-icon>{{ card.show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
             </v-btn>
-            <h5>할일 목록보기</h5>
+            <h5 @click="card.show = !card.show">할일 목록보기</h5>
             <v-spacer></v-spacer>
+            <v-icon small>mdi-pencil</v-icon>
           </v-card-actions>
 
           <v-expand-transition>
@@ -223,4 +221,5 @@ export default {
 .v-label {
   font-size: 13px;
 }
+
 </style>

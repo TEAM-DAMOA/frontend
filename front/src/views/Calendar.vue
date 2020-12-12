@@ -3,86 +3,66 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-sheet height="64">
-            <v-toolbar
-              flat
-            >
-              <v-btn
-                outlined
-                class="mr-4"
-                color="grey darken-2"
-                @click="setToday"
-              >
-                Today
-              </v-btn>
-              <v-btn
-                fab
-                text
-                small
-                color="grey darken-2"
-                @click="prev"
-              >
-                <v-icon small>
-                  mdi-chevron-left
-                </v-icon>
-              </v-btn>
-              <v-btn
-                fab
-                text
-                small
-                color="grey darken-2"
-                @click="next"
-              >
-                <v-icon small>
-                  mdi-chevron-right
-                </v-icon>
-              </v-btn>
-              <v-toolbar-title v-if="$refs.calendar">
-                {{ $refs.calendar.title }}
-              </v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-menu
-                bottom
-                right
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    outlined
-                    color="grey darken-2"
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    <span>{{ typeToLabel[type] }}</span>
-                    <v-icon right>
-                      mdi-menu-down
-                    </v-icon>
-                  </v-btn>
-                </template>
-                <v-list>
-                  <v-list-item @click="type = 'day'">
-                    <v-list-item-title>Day</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click="type = 'week'">
-                    <v-list-item-title>Week</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click="type = 'month'">
-                    <v-list-item-title>Month</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click="type = '4day'">
-                    <v-list-item-title>4 days</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </v-toolbar>
-          </v-sheet>
-          <v-sheet height="600">
+          <v-btn
+            outlined
+            class="mr-4"
+            color="grey darken-2"
+            @click="setToday"
+          >
+            Today
+          </v-btn>
+        </v-col>
+        <v-col>
+
+          <v-btn
+            fab
+            text
+            small
+            color="grey darken-2"
+            @click="prev"
+          >
+            <v-icon small>
+              mdi-chevron-left
+            </v-icon>
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-toolbar-title v-if="$refs.calendar">
+            <h3>{{ $refs.calendar.title }}</h3>
+          </v-toolbar-title>
+        </v-col>
+        <v-col>
+          <v-btn
+            fab
+            text
+            small
+            color="grey darken-2"
+            @click="next"
+          >
+            <v-icon small>
+              mdi-chevron-right
+            </v-icon>
+          </v-btn>
+        </v-col>
+        <v-col>
+        </v-col>
+      </v-row>  
+      <span v-for="(category, i) in this.eventcategory" :key="i">
+      <v-chip class="ma-2" :color="colors[i%11]" text-color="white">
+        {{ category }}
+      </v-chip>
+    </span>  
+      <v-row>
+        <v-col>
+           
+          <v-sheet height="600"> 
             <v-calendar
               ref="calendar"
               v-model="focus"
               color="primary"
               :events="events"
               :event-color="getEventColor"
-              :type="type"
+              type="month"
               @click:event="showEvent"
               @click:more="viewDay"
               @click:date="viewDay"
@@ -103,17 +83,7 @@
                   :color="selectedEvent.color"
                   dark
                 >
-                  <v-btn icon>
-                    <v-icon>mdi-pencil</v-icon>
-                  </v-btn>
                   <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                  <v-spacer></v-spacer>
-                  <v-btn icon>
-                    <v-icon>mdi-heart</v-icon>
-                  </v-btn>
-                  <v-btn icon>
-                    <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn>
                 </v-toolbar>
                 <v-card-text>
                   <span v-html="selectedEvent.details"></span>
@@ -145,7 +115,7 @@ export default {
   methods: {
     viewDay ({ date }) {
       this.focus = date
-      this.type = 'day'
+      
     },
     getEventColor (event) {
       return event.color
@@ -177,31 +147,41 @@ export default {
 
       nativeEvent.stopPropagation()
     },
-    updateRange ({ start, end }) {
+    updateRange () {
       const events = []
 
-      const min = new Date(`${start.date}T00:00:00`)
-      const max = new Date(`${end.date}T23:59:59`)
-      const days = (max.getTime() - min.getTime()) / 86400000
-      const eventCount = this.rnd(days, days + 20)
+      for (let ev_n in this.event_data) {
+        const event_data_detail = this.event_data[ev_n];
+        const sdates = this.event_data[ev_n]["sDate"];
+        const syear = sdates.substring(0, 4);
+        const smonth = sdates.substring(4, 6);
+        const sday = sdates.substring(6, 8);
 
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-        const second = new Date(first.getTime() + secondTimestamp)
+        const edates = this.event_data[ev_n]["eDate"];
+        const eyear = edates.substring(0, 4);
+        const emonth = edates.substring(4, 6);
+        const eday = edates.substring(6, 8);
+        const s_date = syear + "/" + smonth + "/" + sday;
+        const e_date = eyear + "/" + emonth + "/" + eday;
+
+        const first = new Date(`${s_date}/00:00:00`);
+        const second = new Date(`${e_date}/23:59:59`);
+        const eventname = this.event_data[ev_n]["subTitle"];
 
         events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
+          pk_num: Number(ev_n),
+          name: eventname,
           start: first,
           end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
-        })
+          color: this.colors[Number(this.event_data[ev_n]["siteCode"])],
+          details: {
+            세부사항1: event_data_detail["subDate"],
+            세부사항2: event_data_detail["subDesc_2"],
+            세부사항3: event_data_detail["groupName"],
+          },
+        });
       }
-
-      this.events = events
+      this.events = events;
     },
     rnd (a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a
@@ -210,28 +190,52 @@ export default {
   data() {
     return {
       focus: '',
-      type: 'month',
-      typeToLabel: {
-        month: 'Month',
-        week: 'Week',
-        day: 'Day',
-        '4day': '4 Days',
-      },
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
       events: [],
-      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-      names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
-    
+      colors: [
+        "grey darken-1",
+        "pink lighten-2",
+        "purple lighten-2",
+        "deep-purple lighten-2",
+        "indigo lighten-2",
+        "blue lighten-2",
+        "teal lighten-2",
+        "lime lighten-2",
+        "orange lighten-2",
+        "brown darken-1",
+        "blue-grey darken-3",
+      ],
+      eventcategory: {
+        1: "마라톤-운동",
+        2: "마라톤-습관",
+        3: "마라톤-학습",   
+        4: "스프린트-노트북",
+        5: "스프린트-핸드폰",
+      },    
+      event_data: {
+        1: {
+          seqNo: "8586",
+          siteCode: "01",
+          siteName: "마라톤 운동",
+          subTitle: "마라톤 운동",
+          subContent: "완성",
+          sDate: "20201213",
+          eDate: "20201215",
+          mainImageTemp: "PROGRAM_202007290238489980",
+          subDesc_2: "마라톤이다",
+          subDate: "마라톤 완료",
+        }
+      }  
     }
   },
 
 }
 </script>
 <style>
-/* .calendar {
-  background-image: url("https://user-images.githubusercontent.com/60081201/101970109-ce957280-3c6b-11eb-8464-60772c32f2c6.jpg");
+.calendar {
+  background-image: url("https://user-images.githubusercontent.com/60081201/101988287-09cf8a00-3cdc-11eb-9fbe-5df9e0589103.jpg");
   background-attachment: fixed;
   background-origin: border-box;
   background-position: top;
@@ -239,5 +243,5 @@ export default {
   background-size: cover;
   min-height: 100vh;
   text-align: center;
-} */
+}
 </style>

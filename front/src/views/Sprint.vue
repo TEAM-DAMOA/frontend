@@ -27,7 +27,7 @@ export default {
   background-image: url("https://user-images.githubusercontent.com/60081201/101987178-d558cf80-3cd5-11eb-8920-87610c0166e6.jpg");
   background-attachment: fixed;
   /* background-origin: border-box; */
-  background-position: top;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 100vh;
