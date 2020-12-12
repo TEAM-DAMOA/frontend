@@ -19,7 +19,6 @@
       <v-card>
         <v-card-title>
         <h3>새 스프린트 만들기</h3>
-        {{newSprint}}
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -29,13 +28,61 @@
               required
               v-model="newSprint.title"
             ></v-text-field>
+
             <v-text-field
               hint="ex) 한 달 안으로 구입하겠다."
               label="내용"
               required
               v-model="newSprint.title"
             ></v-text-field>
-            <p>제품 이미지</p>
+
+            <div class="box">
+              <p>목표를 이루기 위해 해야할 일</p>
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    v-model="newTask"
+                    label="할 일"
+                  ></v-text-field>
+                </v-col>
+                <v-col>
+                  <v-text-field
+                    v-model="newReward"
+                    label="리워드(원)"
+                    @keydown.enter="create"
+                  ></v-text-field>
+                </v-col>
+                <v-col>
+                  <v-btn class="plus-btn" @click="create" depressed>추가</v-btn>
+                </v-col>
+              </v-row>
+              
+              <v-simple-table v-if="newSprint.todoList.length > 0">
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-left">
+                        해야할 일
+                      </th>
+                      <th class="text-left">
+                        리워드(원)
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="(todo, index) in newSprint.todoList"
+                      :key="index"
+                    >
+                      <td>{{ todo.title }}</td>
+                      <td>{{ todo.reward }}</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </div>
+
+            <p class="mt-3">제품 이미지</p>
             <input type="file" @change="previewImage" accept="image/*" />
             <small>선택사항입니다.</small>
             
@@ -99,6 +146,20 @@ import firebase from "firebase";
 export default {
   name: "SprintCreate",
   methods: {
+    create () {
+      if (this.newTask && this.newReward) {
+        this.newSprint.todoList.push({
+          reward: this.newReward,
+          title: this.newTask,
+        })
+        this.newTask = null
+        this.newReward = null
+      } else if (this.newTask) {
+        alert("할 일에 대한 리워드를 입력해주세요.")
+      } else {
+        alert("할 일을 입력해주세요.")
+      }
+    },
     previewImage(event) {
       this.uploadValue = 0;
       this.picture = null;
@@ -132,6 +193,8 @@ export default {
   },
   data() {
     return {
+      newTask: null,
+      newReward: null,
       picture: null,
       uploadValue: 0,
       imageData: null,
@@ -152,5 +215,9 @@ export default {
 </script>
 
 <style>
+.box {
+  background-color: antiquewhite;
+  padding: 12px;
+}
 
 </style>
