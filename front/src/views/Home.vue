@@ -4,35 +4,40 @@
       <v-row class="mt-5">
         <v-col cols="5">
           <h3 class="col-background">달성 완료</h3>
-          <v-card
-            class="mx-auto"
-            min-width="344"
-            min-height="244"
-          >
+          <div class="content">
+            <v-card
+              class="mx-auto"
+              max-width="344"
+            >
+              <v-card-text>
+                <h5>학습 스프린트</h5>
+                <h4>정처기 하루에 3시간씩 공부</h4>
+                <p>2020.10.24 ~ 2020.11.24</p>
+              </v-card-text>
+            </v-card>
+          </div>
           
-
-            <!-- <v-card-title>
-              Top western road trips
-            </v-card-title>
-
-            <v-card-subtitle>
-              1,000 miles of wonder
-            </v-card-subtitle> -->
-        </v-card>
         </v-col>
         <v-col>
           <h3 class="col-background">진행중인 마라톤</h3>
-          <v-card
-            min-height="244"
-          >
-          </v-card>
+          <div class="content">
+            <v-card
+              class="mx-auto"
+              max-width="230"
+            >
+              <v-card-text>
+                <h5>운동 마라톤</h5>
+                <h4>하루에 스쿼트 3세트</h4>
+              </v-card-text>
+            </v-card>
+
+          </div>
         </v-col>
         <v-col>
           <h3 class="col-background">진행중인 스프린트</h3>
-          <v-card
-            min-height="244"
-          >
-          </v-card>
+          <div class="content">
+
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -63,10 +68,16 @@ export default {
 .col-background {
   height: 50px;
   padding-top: 12px;
+  margin-bottom: 10px;
   background-color: whitesmoke;
   background-color: rgba( 255, 255, 255, 0.5 );
 }
-.theme--light.v-card {
-  opacity: 0.35;
+
+.content {
+  height: 50px;
+  padding-top: 12px;
+  min-height: 344px;
+  background-color: whitesmoke;
+  background-color: rgba( 255, 255, 255, 0.5 );
 }
 </style>
