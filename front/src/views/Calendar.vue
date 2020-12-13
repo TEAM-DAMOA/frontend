@@ -59,7 +59,6 @@
     </span>  
       <v-row>
         <v-col>
-           
           <v-sheet height="600"> 
             <v-calendar
               ref="calendar"
@@ -81,7 +80,7 @@
             >
               <v-card
                 color="grey lighten-4"
-                width="350px"
+                max-width="300px"
                 flat
               >
                 <v-toolbar
@@ -92,15 +91,11 @@
                 </v-toolbar>
                 <v-card-text>
                   <v-container>
-                    <!-- <div v-if="selectedEvent.details.length < 3"> -->
-                      <h4>{{ selectedEvent }}</h4>
-                    <!-- </div> -->
-                    <!-- <div v-else>       
-                      <div>{{ selectedEvent.details.sprintContent }}</div>                  
-                      <div class="text--primary">
-                        목표 금액 {{ selectedEvent.details.purposeMoney }}
-                      </div>                  
-                    </div> -->
+                    {{ selectedEvent }}
+                    <div v-for="(detail, index) in selectedEvent.details" :key="index">
+                      {{detail}}
+
+                    </div>
                   </v-container>
                 </v-card-text>
                 <v-card-actions>
@@ -175,7 +170,7 @@ export default {
         const s_date = syear + "/" + smonth + "/" + sday;
 
         const first = new Date(`${s_date}/00:00:00`);
-        const second = new Date(`${s_date}/23:59:59`);
+        const second = new Date(`${s_date}/00:00:00`);
         const eventname = "마라톤 완료";
 
         events.push({
@@ -184,9 +179,7 @@ export default {
           start: first,
           end: second,
           color: this.colors[10],
-          details: {
-            마라톤완료: event_data_detail["complete_Date"],
-          },
+          details: [event_data_detail["purpose"]],
         });
       }
       // 스프린트 이벤트
@@ -206,7 +199,7 @@ export default {
         const e_date = eyear + "/" + emonth + "/" + eday;
 
         const first2 = new Date(`${s_date2}/00:00:00`);
-        const second2 = new Date(`${e_date}/23:59:59`);
+        const second2 = new Date(`${e_date}/23:59:00`);
         const eventname2 = this.dummyData.completeSprintList[event_s]["sprintTitle"];
 
         this.eventcategory.push( event_data_detail2["sprintTitle"])
@@ -216,10 +209,10 @@ export default {
           start: first2,
           end: second2,
           color: this.colors[j],
-          details: {
-            목표금액: event_data_detail2["purposeMoney"],
-            내용: event_data_detail2["sprintContent"],
-          },
+          details: [
+            event_data_detail2["purposeMoney"],
+            event_data_detail2["sprintContent"],
+          ]
         });
         j += 1;
       }
@@ -250,29 +243,17 @@ export default {
         "orange lighten-2",
       ],
       eventcategory:[],
-      event_data: {
-        1: {
-          seqNo: "8586",
-          siteCode: "01",
-          siteName: "마라톤 운동",
-          subTitle: "마라톤 운동",
-          subContent: "완성",
-          sDate: "20201213",
-          eDate: "20201215",
-          mainImageTemp: "PROGRAM_202007290238489980",
-          subDesc_2: "마라톤이다",
-          subDate: "마라톤 완료",
-        }
-      },
       dummyData: {
         completeMarathonList:[
           {
             marathonId:13,
-            complete_Date:"2020-12-02"
+            complete_Date:"2020-12-02",
+            purpose: "자기개발"
           },
           {
             marathonId:5,
-            complete_Date:"2020-12-13"
+            complete_Date:"2020-12-13",
+            purpose: "습관 고치기"
           }
         ],
         completeSprintList:[
@@ -290,7 +271,7 @@ export default {
             startTime: "2020-11-01",
             endTime: "2020-12-03",
             sGoalMoney:2950000,
-            nowMoney: 8000,
+            purposeMoney: 8000,
           }
         ]  
       }
