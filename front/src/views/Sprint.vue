@@ -1,10 +1,13 @@
 <template>
   <div class="sprint">
     <v-container>
-      <SprintCreate />
+      <div class="text-background">
+        <h1 class="anounce">스프린트 목록</h1>
+        <h2 class="anounce mb-3">당신만의 스프린트를 작성해서 목표 물건을 쟁취하세요!</h2>
+        <SprintCreate />
+      </div>
       <SprintList />
     </v-container>
-    
   </div>
 </template>
 
@@ -17,9 +20,8 @@ export default {
   components: {
     SprintCreate,
     SprintList,
-  }
-
-}
+  },
+};
 </script>
 
 <style>
@@ -32,5 +34,13 @@ export default {
   background-size: cover;
   min-height: 100vh;
   text-align: center;
+}
+.text-background {
+  padding-top: 10px;
+  padding-bottom: 30px;
+  margin-top: 12px;
+  background-color: whitesmoke;
+
+  background-color: rgba(255, 255, 255, 0.5);
 }
 </style>
