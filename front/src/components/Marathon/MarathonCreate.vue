@@ -27,6 +27,7 @@
                 <v-text-field
                 label="목표"
                 required
+                v-model="newMarathon.content"
                 ></v-text-field>
             </v-col>
             
@@ -34,11 +35,13 @@
                 <v-autocomplete
                 :items="['운동', '생활습관', '독서', '학습', '취미생활', '회사생활', '기타']"
                 label="카테고리"
+                v-model="newMarathon.purpose"
                 ></v-autocomplete>
             </v-col>
             <v-col>
                 <v-text-field
                 label="리워드 금액"
+                v-model="newMarathon.reward"
                 hint="목표를 수행했을 때 받을 금액을 적어주세요."
                 ></v-text-field>
             </v-col>
@@ -50,14 +53,15 @@
         <v-spacer></v-spacer>
         <v-btn
           text
-          @click="dialog = false"
+          @click="closeCreateMarathon"
         >
           닫기
         </v-btn>
         <v-btn
           color="primary"
           text
-          @click="dialog = false"
+          :disabled="!(newMarathon.purpose && newMarathon.content && newMarathon.reward)"
+          @click="saveMarathon"
         >
           저장
         </v-btn>
@@ -69,11 +73,42 @@
 </template>
 
 <script>
+import SERVER from "@/api";
+import axios from "axios";
+
 export default {
   name: "MarathonCreate",
+  methods: {
+    saveMarathon() {
+      axios.post(SERVER.URL + SERVER.ROUTES.marathon.create + "/1", {
+        purpose: this.newMarathon.purpose,
+        content: this.newMarathon.content,
+        reward: parseInt(this.newMarathon.reward),
+        color: "blue",
+        startDate: new Date().toISOString().substr(0, 10),
+      })
+      .then(() => {
+        this.dialog = false
+        window.location.reload();
+      })
+    },
+    closeCreateMarathon() {
+      this.dialog = false
+      this.newMarathon = {
+        purpose: null,
+        content: null,
+        reward: null,
+      }
+    }
+  },
   data() {
     return {
-      dialog: false
+      dialog: false,
+      newMarathon: {
+        purpose: null,
+        content: null,
+        reward: null,
+      }
     }
   },
 
