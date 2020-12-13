@@ -1,7 +1,7 @@
 <template>
   <div class="marathon">
     <v-container>
-      <MarathonCreate />
+      <!-- <MarathonCreate /> -->
 
       <div class="text-background">
         <h2 class="anounce">진행중인 마라톤 {{ marathonCount }}개</h2>
@@ -34,26 +34,26 @@
           <small>100% 달성시 정산됩니다</small>
         </v-col>
       </div>
-      <MarathonList />
+      <!-- <MarathonList /> -->
     </v-container>
   </div>
 </template>
 
 <script>
-import MarathonCreate from "@/components/marathon/MarathonCreate.vue";
-import MarathonList from "@/components/marathon/MarathonList.vue";
+// import MarathonCreate from "@/components/marathon/MarathonCreate.vue";
+// import MarathonList from "@/components/marathon/MarathonList.vue";
 
 export default {
   name: "Marathon",
-  components: {
-    MarathonCreate,
-    MarathonList,
-  },
-  created: {
-    scrollBehaviour() {
-      return { x: 0, y: 0 };
-    },
-  },
+  // components: {
+  //   MarathonCreate,
+  //   MarathonList
+  // },
+  // created: {
+  //   scrollBehaviour() {
+  //     return { x: 0, y: 0 }
+  //   }
+  // },
   methods: {
     changeAimPrice() {},
   },

@@ -5,7 +5,10 @@
         <v-hover v-slot="{ hover }">
           <v-card class="mx-auto" max-width="344">
             <div v-if="sprint.purposeProgress >= 90">
-              <v-img :src="sprint.purposePicture" height="200px">
+              <v-img :src="sprint.purposePicture" height="250px">
+                <v-card-title class="d-flex transition-fast-in-fast-out darken-2 v-card--reveal display-3 black--text"
+                  ><h5>{{ sprint.purposeMoney }}원</h5></v-card-title
+                >
                 <v-expand-transition>
                   <div
                     v-if="hover"
@@ -18,7 +21,10 @@
               </v-img>
             </div>
             <div v-else-if="sprint.purposeProgress >= 50">
-              <v-img :src="sprint.purposePicture" height="200px" style="opacity: 0.5">
+              <v-img :src="sprint.purposePicture" height="250px" style="opacity: 0.5">
+                <v-card-title class="d-flex transition-fast-in-fast-out darken-2 v-card--reveal display-3 black--text"
+                  ><h5>{{ sprint.purposeMoney }}원</h5></v-card-title
+                >
                 <v-expand-transition>
                   <div
                     v-if="hover"
@@ -31,11 +37,14 @@
               </v-img>
             </div>
             <div v-else>
-              <v-img :src="sprint.purposePicture" height="200px" style="opacity: 0.3">
+              <v-img :src="sprint.purposePicture" height="250px" style="opacity: 0.3">
+                <v-card-title class="d-flex transition-fast-in-fast-out darken-2 v-card--reveal display-3 black--text"
+                  ><h5>{{ sprint.purposeMoney }}원</h5></v-card-title
+                >
                 <v-expand-transition>
                   <div
                     v-if="hover"
-                    class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal display-3 white--text"
+                    class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal display-2 white--text"
                     style="height: 100%; opacity: 0.8"
                   >
                     {{ sprint.purposeProgress }}%
@@ -43,11 +52,11 @@
                 </v-expand-transition>
               </v-img>
             </div>
-            <h4 class="mt-3">{{ sprint.title }}</h4>
-            <h5>목표금액 : {{ sprint.purposeMoney }}원</h5>
-            <h5>누적금액 : {{ sprint.accumulateMoney }}원</h5>
-            <h5>정산금액 : {{ sprint.sGoalMoney }}원</h5>
-            <h5>현재금액 : {{ sprint.nowMoney }}원</h5>
+            <v-progress-linear color="purple" height="15" :value="(sprint.accumulateMoney / sprint.purposeMoney) * 100" max="10" striped
+              ><h5 style="color: white">{{ sprint.accumulateMoney }}원</h5></v-progress-linear
+            >
+            <h2 class="mt-3">{{ sprint.title }}</h2>
+
             <!-- <v-card-subtitle>
             {{ sprint.content }}
             <p>{{ sprint.startTime }} ~ {{ sprint.endTime }}</p>
@@ -58,6 +67,7 @@
                 <v-icon>{{ sprint.show ? "mdi-chevron-up" : "mdi-chevron-down" }}</v-icon>
               </v-btn>
               <h5 @click="sprint.show = !sprint.show">할일 목록보기</h5>
+
               <v-spacer></v-spacer>
 
               <v-row justify="end" class="pr-3">
@@ -161,11 +171,12 @@
 
             <v-expand-transition>
               <div v-show="sprint.show">
-                <v-divider class="mt-4"></v-divider>
+                <div class="money-board">
+                  <h4>정산금액 : {{ sprint.sGoalMoney }}원</h4>
+                  <h5>현재금액 : {{ sprint.nowMoney }}원</h5>
+                </div>
                 <v-row class="my-1" align="center">
                   <strong class="mx-5 info--text text--darken-2"> 진행중 {{ sprint.remainingTasks }} </strong>
-
-                  <v-divider vertical></v-divider>
 
                   <strong class="mx-4 success--text text--darken-2"> 완료 {{ sprint.completedTasks }} </strong>
 
@@ -439,5 +450,12 @@ export default {
 }
 .v-label {
   font-size: 13px;
+}
+.money-board {
+  text-align: left;
+  padding-left: 10px;
+  background-color: antiquewhite;
+  height: 65px;
+  padding-top: 10px;
 }
 </style>
