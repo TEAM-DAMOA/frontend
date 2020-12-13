@@ -142,26 +142,10 @@
                             <v-card>                            
                               <v-card-text>
                                 <v-container>
-                                  <v-row>
-                                    <v-col
-                                      cols="12"
-                                      sm="6"
-                                    >
-                                      <v-text-field
-                                        v-model="sprint.editedItem.title"
-                                        label="해야할 일"
-                                      ></v-text-field>
-                                    </v-col>
-                                    <v-col
-                                      cols="12"
-                                      sm="6"
-                                    >
-                                      <v-text-field
-                                        v-model="sprint.editedItem.reward"
-                                        label="리워드"
-                                      ></v-text-field>
-                                    </v-col>
-                                  </v-row>
+                                  <v-text-field
+                                    v-model="sprint.editedItem.title"
+                                    label="해야할 일"
+                                  ></v-text-field>
                                 </v-container>
                               </v-card-text>
 
@@ -413,7 +397,7 @@ export default {
           sortable: false,
           value: 'title',
         },
-        { text: '리워드', value: 'reward' },
+        { text: '리워드(원)', value: 'reward' },
         { text: '편집', value: 'actions', sortable: false },
       ],
       colors: ["#D1C4E9", "#C5CAE9", "#B2DFDB", "#FFCDD2", "#E1BEE7", "#F8BBD0"],

@@ -59,7 +59,6 @@
     </span>  
       <v-row>
         <v-col>
-           
           <v-sheet height="600"> 
             <v-calendar
               ref="calendar"
@@ -92,12 +91,10 @@
                 </v-toolbar>
                 <v-card-text>
                   <v-container>
-                    <div v-if="selectedEvent.start === selectedEvent.end">
-                      <h4>카테고리</h4>
-                    </div>
-                    <div v-else>       
-                      <h4>목표 금액 {{ selectedEvent.details[0] }}</h4>
-                      <h3>{{ selectedEvent.details[1] }}</h3>
+                    {{ selectedEvent }}
+                    <div v-for="(detail, index) in selectedEvent.details" :key="index">
+                      {{detail}}
+
                     </div>
                   </v-container>
                 </v-card-text>
@@ -164,6 +161,7 @@ export default {
       const events = []
       // 마라톤 이벤트
       for (let event_m in this.dummyData.completeMarathonList) {
+        const event_data_detail = this.dummyData.completeMarathonList[event_m];
         const sdates = this.dummyData.completeMarathonList[event_m]["complete_Date"];
         const syear = sdates.substring(0, 4);
         const smonth = sdates.substring(5, 7);
@@ -181,7 +179,7 @@ export default {
           start: first,
           end: second,
           color: this.colors[10],
-          details: ["마라톤완료"]
+          details: [event_data_detail["purpose"]],
         });
       }
       // 스프린트 이벤트
@@ -245,29 +243,17 @@ export default {
         "orange lighten-2",
       ],
       eventcategory:[],
-      event_data: {
-        1: {
-          seqNo: "8586",
-          siteCode: "01",
-          siteName: "마라톤 운동",
-          subTitle: "마라톤 운동",
-          subContent: "완성",
-          sDate: "20201213",
-          eDate: "20201215",
-          mainImageTemp: "PROGRAM_202007290238489980",
-          subDesc_2: "마라톤이다",
-          subDate: "마라톤 완료",
-        }
-      },
       dummyData: {
         completeMarathonList:[
           {
             marathonId:13,
-            complete_Date:"2020-12-02"
+            complete_Date:"2020-12-02",
+            purpose: "자기개발"
           },
           {
             marathonId:5,
-            complete_Date:"2020-12-13"
+            complete_Date:"2020-12-13",
+            purpose: "습관 고치기"
           }
         ],
         completeSprintList:[
