@@ -24,7 +24,7 @@
                 </v-card-text>
               </v-card>
             </div>
-            <h4>스프린트</h4>
+            <h4 class="mt-4">스프린트</h4>
             <hr class="mb-2 mt-2">
             
             <div v-for="(sp, index) in completeSprintList" :key="index">
@@ -93,15 +93,22 @@ export default {
     axios.get(SERVER.URL + SERVER.ROUTES.marathon.list + "/completeList")
     .then((res) => {
       this.completeMarathonList = res.data.marathon
-      this.completeSprintList = res.data.sprint
-      console.log(res)
     })
   },
         
   data() {
     return {
       completeMarathonList: [],
-      completeSprintList: [],
+      completeSprintList: [
+        {
+          "sprintTitle": "애플워치 사고만다",
+          "sGoalMoney": 400000
+        },
+        {
+          "sprintTitle": "맥북 산다",
+          "sGoalMoney": 2950000
+        }
+      ],
       proceedMarathonList: [
         {
           maratonId: 1,
@@ -176,7 +183,7 @@ export default {
 .content {
   height: 50px;
   padding-top: 12px;
-  min-height: 600px;
+  min-height: 700px;
   background-color: whitesmoke;
   background-color: rgba( 255, 255, 255, 0.5 );
 }

@@ -66,11 +66,11 @@ import MarathonList from "@/components/marathon/MarathonList.vue";
 import SERVER from "@/api";
 import axios from "axios";
 
-export default { 
+export default {
   name: "Marathon",
   components: {
     MarathonCreate,
-    MarathonList
+    MarathonList,
   },
   created() {
     axios.get(SERVER.URL + SERVER.ROUTES.marathon.process)
@@ -98,7 +98,7 @@ export default {
       info: []
     }
   },
-}
+};
 </script>
 
 <style>
@@ -115,8 +115,8 @@ export default {
 .text-background {
   margin-top: 12px;
   background-color: whitesmoke;
-  
-  background-color: rgba( 255, 255, 255, 0.5 );
+
+  background-color: rgba(255, 255, 255, 0.5);
 }
 .aim-price {
   text-align: end;
