@@ -46,6 +46,8 @@
             <h4 class="mt-3">{{ sprint.title }}</h4>
             <h5>목표금액 : {{ sprint.purposeMoney }}원</h5>
             <h5>누적금액 : {{ sprint.accumulateMoney }}원</h5>
+            <h5>정산금액 : {{ sprint.sGoalMoney }}원</h5>
+            <h5>현재금액 : {{ sprint.nowMoney }}원</h5>
             <!-- <v-card-subtitle>
             {{ sprint.content }}
             <p>{{ sprint.startTime }} ~ {{ sprint.endTime }}</p>
@@ -253,9 +255,10 @@ export default {
             purposeMoney: sprintData[i].purposeMoney,
             purposePicture: "https://user-images.githubusercontent.com/60081201/101981507-d4617700-3cb0-11eb-9448-a61fef887e2d.JPG",
             purposeProgress: 0,
-            sGoalMoney: sprintData[i].sGoalMoney,
+            sGoalMoney: sprintData[i].sgoalMoney,
             success: sprintData[i].success,
             toDoList: toDoListTemp,
+            nowMoney: sprintData[i].nowMoney,
             sprintId: sprintData[i].sprintId,
             accumulateMoney: sprintData[i].accumulateMoney,
             // 더보기 보이기 위해 추가해야할 것
@@ -334,12 +337,13 @@ export default {
         .then((res) => {
           console.log(res);
           axios
-            .post(`${SERVER.URL}/api/sprint/complete/${this.sprintList[sprintIdx].sprintId}`, {
-              sprintTaskId: this.sprintList[sprintIdx].toDoList[toDoIdx].sprintTaskId,
-              reward: this.sprintList[sprintIdx].toDoList[toDoIdx].reward,
-            })
+            .get(`${SERVER.URL}/api/sprint/one/${this.sprintList[sprintIdx].sprintId}`)
             .then((res) => {
               console.log(res);
+              var changedSprint = res.data.sprint;
+              this.sprintList[sprintIdx].accumulateMoney = changedSprint.accumulateMoney;
+              this.sprintList[sprintIdx].success = changedSprint.success;
+              this.sprintList[sprintIdx].nowMoney = changedSprint.nowMoney;
             })
             .catch((err) => {
               console.log(err);
