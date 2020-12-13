@@ -91,10 +91,8 @@
                 </v-toolbar>
                 <v-card-text>
                   <v-container>
-                    {{ selectedEvent }}
-                    <div v-for="(detail, index) in selectedEvent.details" :key="index">
-                      {{detail}}
-
+                    <div v-for="(value, key, index) in selectedEvent.details" :key="index">
+                      <h4>{{ key }} : {{ value }}</h4>
                     </div>
                   </v-container>
                 </v-card-text>
@@ -179,7 +177,7 @@ export default {
           start: first,
           end: second,
           color: this.colors[10],
-          details: [event_data_detail["purpose"]],
+          details: {"카테고리": event_data_detail["purpose"]},
         });
       }
       // 스프린트 이벤트
@@ -209,10 +207,10 @@ export default {
           start: first2,
           end: second2,
           color: this.colors[j],
-          details: [
-            event_data_detail2["purposeMoney"],
-            event_data_detail2["sprintContent"],
-          ]
+          details: {
+            "목표금액" : event_data_detail2["purposeMoney"],
+            "내용" : event_data_detail2["sprintContent"],
+          }
         });
         j += 1;
       }
@@ -230,16 +228,16 @@ export default {
       selectedOpen: false,
       events: [],
       colors: [
-        "pink lighten-2",
         "purple lighten-2",
         "teal lighten-2",
+        "pink lighten-2",
         "deep-purple lighten-2",
-        "grey darken-1",
-        "indigo lighten-2",
+        "blue-grey darken-3",
         "blue lighten-2",
         "lime lighten-2",
+        "indigo lighten-2",
         "brown darken-1",
-        "blue-grey darken-3",
+        "grey darken-1",
         "orange lighten-2",
       ],
       eventcategory:[],
@@ -262,6 +260,14 @@ export default {
             sprintContent:"시계 사자",
             startTime: "2020-12-01",
             endTime: "2020-12-30",
+            purposeMoney:390000,
+            nowMoney: 8000,
+          },
+          {
+            sprintTitle:"기계식 키보드 구매",
+            sprintContent:"친구한테 추천받은 키보드! 빨리 쓰고 싶다.",
+            startTime: "2020-12-11",
+            endTime: "2020-12-20",
             purposeMoney:390000,
             nowMoney: 8000,
           },
