@@ -80,7 +80,6 @@
             <v-row justify="end" class="pr-3">
               <v-dialog
               v-model="sprint.dialog"
-              @click="updateSprint(sprint)"
               persistent
               max-width="500px"
               >
@@ -140,11 +139,7 @@
                                 추가하기
                               </v-btn>
                             </template>
-                            <v-card>
-                              <v-card-title>
-                                <span class="headline">{{ formTitle }}</span>
-                              </v-card-title>
-
+                            <v-card>                            
                               <v-card-text>
                                 <v-container>
                                   <v-row>
@@ -188,7 +183,7 @@
                               </v-card-actions>
                             </v-card>
                           </v-dialog>
-                          <v-dialog v-model="dialogDelete" max-width="300px">
+                          <v-dialog v-model="sprint.dialogDelete" max-width="300px">
                             <v-card>
                               <v-card-title><h4>해야할 일을 삭제하시겠습니까?</h4></v-card-title>
                               <v-card-actions>
@@ -360,27 +355,10 @@ export default {
     selectFile(file) {
       this.newSprint.image = "http://k3a301.p.ssafy.io:8000/images/" + file.name
     },
-    create () {
-      if (this.newTask && this.newReward) {
-        this.newSprint.todoList.push({
-          reward: this.newReward,
-          title: this.newTask,
-        })
-        this.newTask = null
-        this.newReward = null
-      } else if (this.newTask) {
-        alert("할 일에 대한 리워드를 입력해주세요.")
-      } else {
-        alert("할 일을 입력해주세요.")
-      }
-    },
     changeCheck(i) {
       this.sprintList[i].completedTasks = this.sprintList[i].toDoList.filter(todo => todo.completeStatus).length
       this.sprintList[i].purposeProgress = this.sprintList[i].completedTasks / this.sprintList[i].toDoList.length * 100
       this.sprintList[i].remainingTasks = this.sprintList[i].toDoList.length - this.sprintList[i].completedTasks
-    },
-    updateSprint(index) {
-      console.log(index)
     },
     // 해야할 일 관련 메소드
     editItem (index, item) {
@@ -390,6 +368,7 @@ export default {
     },
 
     deleteItem (index, item) {
+      console.log("dd")
       this.sprintList[index].editedIndex = this.sprintList[index].toDoList.indexOf(item)
       this.sprintList[index].editedItem = Object.assign({}, item)
       this.sprintList[index].dialogDelete = true
@@ -420,9 +399,9 @@ export default {
       if (this.sprintList[index].editedIndex > -1) {
         Object.assign(this.sprintList[index].toDoList[this.sprintList[index].editedIndex], this.sprintList[index].editedItem)
       } else {
-        this.toDoList.push(this.sprintList[index].editedItem)
+        this.sprintList[index].toDoList.push(this.sprintList[index].editedItem)
       }
-      this.close()
+      this.close(index)
     },
   },
   data() {
