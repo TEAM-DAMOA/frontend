@@ -1,35 +1,38 @@
 <template>
   <div class="home">
     <v-container>
+      <MypageAccount/>
+      <hr>
       <v-row class="mt-5">
         <v-col cols="5">
           <h3 class="col-background">달성 완료</h3>
           <v-container class="content">
             <h4>마라톤</h4>
             <hr class="mb-2 mt-2">
-            <div v-for="(mara, index) in completeList.marathon" :key="index">
+            <div v-for="(mara, index) in completeMarathonList" :key="index">
               <v-card
-                class="mx-auto"
+                class="mx-auto mb-2 pt-2"
                 max-width="344"
               >
                 <v-card-text>
-                  <v-icon color="primary">mdi-crown</v-icon>
+                  <h3>
+                    <v-icon color="primary">mdi-crown</v-icon> D + {{ mara.dday }}
+                  </h3>
                   <h5>{{ mara.startDate }}</h5>
-                  <h4>{{ mara.content }}</h4>
-                  <p>성공 횟수 {{ mara.successCount }}</p>
+                  <h4>{{ mara.purpose }}</h4>
+                  <small>성공 횟수 {{ mara.successCount }}</small>
                 </v-card-text>
               </v-card>
             </div>
             <h4>스프린트</h4>
             <hr class="mb-2 mt-2">
             
-            <div v-for="(sp, index) in completeList.sprint" :key="index">
+            <div v-for="(sp, index) in completeSprintList" :key="index">
               <v-card
-                class="mb-2 ml-12"
+                class="mb-2 ml-12 p-2"
                 max-width="344"
               >
                 <v-card-text>
-                 
                   <v-icon color="blue">mdi-thumb-up</v-icon>
                   <h5>달성 금액 {{ sp.sGoalMoney }}</h5>
                   <h4>{{ sp.sprintTitle }}</h4>
@@ -66,7 +69,7 @@
         </v-col>
         <v-col>
           <h3 class="col-background">진행중인 스프린트</h3>
-          <div class="content">
+          <div class="content-2">
 
           </div>
         </v-col>
@@ -77,41 +80,33 @@
 </template>
 
 <script>
+import SERVER from "@/api";
+import axios from "axios";
+import MypageAccount from "@/components/mypage/MypageAccount.vue";
+
 export default {
   name: 'Mypage',
+  components: {
+    MypageAccount
+  },
+  created() {
+    axios.get(SERVER.URL + SERVER.ROUTES.marathon.list + "/completeList")
+    .then((res) => {
+      this.completeMarathonList = res.data.marathon
+      this.completeSprintList = res.data.sprint
+      console.log(res)
+    })
+  },
+        
   data() {
     return {
-      completeList: {
-        "marathon":[
-          {
-            "content": "팔굽혀펴기 30회",
-            "startDate": "2020-01-13",
-            "dDay": 350,
-            "successCount": 140
-          },
-          {
-            "content": "리코더 1시간 연습",
-            "startDate": "2020-05-13",
-            "dDay":  250,
-            "successCount": 13
-          }
-        ],
-        "sprint":[
-          {
-            "sprintTitle": "애플워치 사고만다",
-            "sGoalMoney": 400000
-          },
-          {
-            "sprintTitle": "맥북 산다",
-            "sGoalMoney": 2950000
-          }
-        ]
-      },
+      completeMarathonList: [],
+      completeSprintList: [],
       proceedMarathonList: [
         {
           maratonId: 1,
           purpose: "건강",
-          color: "blue lighten-2",
+          color: "#E8F5E9",
           startDate: "2020-01-13",
           taskList:[
             {
@@ -131,7 +126,7 @@ export default {
         {
           maratonId: 3,
           purpose: "취미생활",
-          color: "yellow lighten-2",
+          color: "#E1BEE7",
           startDate: "2020-03-01",
           taskList:[
             {
@@ -181,7 +176,7 @@ export default {
 .content {
   height: 50px;
   padding-top: 12px;
-  min-height: 500px;
+  min-height: 600px;
   background-color: whitesmoke;
   background-color: rgba( 255, 255, 255, 0.5 );
 }
