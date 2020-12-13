@@ -13,11 +13,11 @@ import SprintCreate from "@/components/sprint/SprintCreate.vue";
 import SprintList from "@/components/sprint/SprintList.vue";
 
 export default {
-    name: "Sprint",
-    components: {
-      SprintCreate,
-      SprintList
-    }
+  name: "Sprint",
+  components: {
+    SprintCreate,
+    SprintList,
+  }
 
 }
 </script>

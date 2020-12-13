@@ -10,6 +10,7 @@
               max-width="344"
             >
               <v-card-text>
+                <v-icon color="primary">mdi-crown</v-icon>
                 <h5>학습 스프린트</h5>
                 <h4>정처기 하루에 3시간씩 공부</h4>
                 <p>2020.10.24 ~ 2020.11.24</p>
@@ -50,6 +51,13 @@
 
 export default {
   name: 'Mypage',
+  data() {
+    return {
+      dummyData: {
+        
+      }
+    }
+  },
  
 }
 </script>
@@ -66,6 +74,7 @@ export default {
   text-align: center;
 }
 .col-background {
+  border-radius: 2rem;
   height: 50px;
   padding-top: 12px;
   margin-bottom: 10px;

@@ -4,7 +4,7 @@
       <v-dialog
       v-model="dialog"
       persistent
-      max-width="400px"
+      max-width="500px"
       >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -37,54 +37,118 @@
               v-model="newSprint.content"
             ></v-text-field>
 
-            <div class="box">
-              <p>목표를 이루기 위해 해야할 일</p>
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    v-model="newTask"
-                    label="할 일"
-                  ></v-text-field>
-                </v-col>
-                <v-col>
-                  <v-text-field
-                    v-model="newReward"
-                    label="리워드(원)"
-                    @keydown.enter="create"
-                  ></v-text-field>
-                </v-col>
-                <v-col>
-                  <v-btn class="plus-btn" @click="create" depressed>추가</v-btn>
-                </v-col>
-              </v-row>
-              
-              <v-simple-table v-if="newSprint.todoList.length > 0">
-                <template v-slot:default>
-                  <thead>
-                    <tr>
-                      <th class="text-left">
-                        해야할 일
-                      </th>
-                      <th class="text-left">
-                        리워드(원)
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-for="(todo, index) in newSprint.todoList"
-                      :key="index"
-                    >
-                      <td>{{ todo.title }}</td>
-                      <td>{{ todo.reward }}</td>
-                    </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
-            </div>
+            <v-data-table
+              :headers="headers"
+              :items="toDoList"
+              sort-by="reward"
+              class="elevation-1"
+            >
+              <template v-slot:top>
+                <v-toolbar
+                  flat
+                >
+                  <v-toolbar-title><p>목표를 이루기 위해 해야할 일</p></v-toolbar-title>
+                  <v-divider
+                    class="mx-4"
+                    inset
+                    vertical
+                  ></v-divider>
+                  <v-spacer></v-spacer>
+                  <v-dialog
+                    v-model="dialog2"
+                    max-width="300px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        depressed
+                        class="mb-2"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        추가하기
+                      </v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title>
+                        <span class="headline">{{ formTitle }}</span>
+                      </v-card-title>
+
+                      <v-card-text>
+                        <v-container>
+                          <v-row>
+                            <v-col
+                              cols="12"
+                              sm="6"
+                            >
+                              <v-text-field
+                                v-model="editedItem.title"
+                                label="해야할 일"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col
+                              cols="12"
+                              sm="6"
+                            >
+                              <v-text-field
+                                v-model="editedItem.reward"
+                                label="리워드"
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-card-text>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          text
+                          @click="close"
+                        >
+                          취소
+                        </v-btn>
+                        <v-btn
+                          color="primary"
+                          text
+                          @click="save"
+                        >
+                          저장
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                  <v-dialog v-model="dialogDelete" max-width="300px">
+                    <v-card>
+                      <v-card-title><h4>해야할 일을 삭제하시겠습니까?</h4></v-card-title>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text @click="closeDelete">취소</v-btn>
+                        <v-btn color="error" text @click="deleteItemConfirm">삭제</v-btn>
+                        <v-spacer></v-spacer>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-toolbar>
+              </template>
+              <template v-slot:item.actions="{ item }">
+                <v-icon
+                  small
+                  class="mr-2"
+                  @click="editItem(item)"
+                >
+                  mdi-pencil
+                </v-icon>
+                <v-icon
+                  small
+                  @click="deleteItem(item)"
+                >
+                  mdi-delete
+                </v-icon>
+              </template>
+            </v-data-table>         
 
             <!-- <p class="mt-3">제품 이미지</p> -->
             <v-file-input
+              class="mt-3"
               accept="image/*"
               label="제품 사진"
               @change="selectFile"
@@ -149,27 +213,99 @@
 
 <script>
 // import firebase from "firebase";
+import axios from "axios";
 
 export default {
   name: "SprintCreate",
+  computed: {
+    formTitle () {
+      return this.editedIndex === -1 ? '새로 추가하기' : '수정하기'
+    },
+  },
+  watch: {
+    dialog (val) {
+      val || this.close()
+    },
+    dialogDelete (val) {
+      val || this.closeDelete()
+    },
+  },
   methods: {
-    selectFile(file) {
-      this.newSprint.image = "http://k3a301.p.ssafy.io:8000/images/" + file.name
+    // 해야할 일 관련 메소드
+    editItem (item) {
+      this.editedIndex = this.toDoList.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog2 = true
     },
-    create () {
-      if (this.newTask && this.newReward) {
-        this.newSprint.todoList.push({
-          reward: this.newReward,
-          title: this.newTask,
-        })
-        this.newTask = null
-        this.newReward = null
-      } else if (this.newTask) {
-        alert("할 일에 대한 리워드를 입력해주세요.")
+
+    deleteItem (item) {
+      this.editedIndex = this.toDoList.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogDelete = true
+    },
+
+    deleteItemConfirm () {
+      this.toDoList.splice(this.editedIndex, 1)
+      this.closeDelete()
+    },
+
+    close () {
+      this.dialog2 = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+
+    closeDelete () {
+      this.dialogDelete = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+
+    save () {
+      if (this.editedIndex > -1) {
+        Object.assign(this.toDoList[this.editedIndex], this.editedItem)
       } else {
-        alert("할 일을 입력해주세요.")
+        this.toDoList.push(this.editedItem)
       }
+      this.close()
     },
+
+    // 제품 이미지
+    // dataURLtoFile(dataurl, fileName) {
+    //   var arr = dataurl.split(","),
+    //     mime = arr[0].match(/:(.*?);/)[1],
+    //     bstr = atob(arr[1]),
+    //     n = bstr.length,
+    //     u8arr = new Uint8Array(n);
+
+    //   while (n--) {
+    //     u8arr[n] = bstr.charCodeAt(n);
+    //   }
+
+    //   return new File([u8arr], fileName, { type: mime });
+    // },
+    selectFile(file) {
+      const formData = new FormData();
+
+      formData.append("files", file)
+
+      axios
+      .post("http://k3a301.p.ssafy.io:8888/upload",
+        formData,
+        {
+          "Content-Type": "multipart/form-data",
+        })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => console.err(err))
+      // this.newSprint.image = "http://k3a301.p.ssafy.io:8000/images/" + file.name
+    },
+    
     // previewImage(event) {
     //   this.uploadValue = 0;
     //   this.picture = null;
@@ -203,8 +339,6 @@ export default {
   },
   data() {
     return {
-      newTask: null,
-      newReward: null,
       // picture: null,
       // uploadValue: 0,
       // imageData: null,
@@ -217,17 +351,39 @@ export default {
         endTime: new Date().toISOString().substr(0, 10),
         sGoalMoney: "",
         todoList: [] // {title: "", reward: ""}, 
-      }
+      },
+      // 스프린트 해야할 일에 필요한 데이터
+      dialog2: false,
+      dialogDelete: false,
+      headers: [
+        {
+          text: '해야할 일',
+          align: 'start',
+          sortable: false,
+          value: 'title',
+        },
+        { text: '리워드', value: 'reward' },
+        { text: '편집', value: 'actions', sortable: false },
+      ],
+      toDoList: [],
+      editedIndex: -1,
+      editedItem: {
+        title: '',
+        reward: null,
+      },
+      defaultItem: {
+        title: '',
+        reward: null,
+      },     
     }
-  },
-
+  }
 }
+
+
 </script>
 
 <style>
-.box {
-  background-color: antiquewhite;
-  padding: 12px;
+.v-application p {
+  font-size: 14px;
 }
-
 </style>

@@ -14,7 +14,7 @@
     </div>
     <div class="intro-function">
       <v-img src="https://user-images.githubusercontent.com/60081201/101995027-42865800-3d0a-11eb-8935-95f15036a409.JPG" />
-      <v-container><v-btn dark @click="$router.push({ path: '/mypage' })"><h2>이용하기</h2></v-btn></v-container>
+      <v-container><v-btn dark @click="$router.push({ path: '/marathon' })"><h2>이용하기</h2></v-btn></v-container>
     </div>
   </div>
 </template>

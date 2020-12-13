@@ -70,6 +70,11 @@ export default {
     MarathonCreate,
     MarathonList
   },
+  // created: {
+  //   scrollBehaviour() { 
+  //     return { x: 0, y: 0 } 
+  //   }
+  // },
   methods: {
     changeAimPrice() {
     }
@@ -94,7 +99,7 @@ export default {
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 100vh;
+  min-height: 100%;
   text-align: center;
 }
 .text-background {
