@@ -264,7 +264,7 @@ export default {
             startTime: sprintData[i].startTime,
             endTime: sprintData[i].endTime,
             purposeMoney: sprintData[i].purposeMoney,
-            purposePicture: "https://user-images.githubusercontent.com/60081201/101981507-d4617700-3cb0-11eb-9448-a61fef887e2d.JPG",
+            purposePicture: sprintData[i].purposePicture,
             purposeProgress: 0,
             sGoalMoney: sprintData[i].sgoalMoney,
             success: sprintData[i].success,
