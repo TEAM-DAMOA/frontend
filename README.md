@@ -59,7 +59,20 @@ $ java -jar backend/restapi/target/restapi-0.0.1-SNAPSHOT.jar
 
 ![erd](https://user-images.githubusercontent.com/60081201/102709850-6e4ca380-42f1-11eb-9ccd-b303cde23a93.JPG)
 
-### 
+
+
+## REST API
+
+| URL                             | 메소드 | 리퀘스트바디                                                 | 비고                     |
+| ------------------------------- | ------ | ------------------------------------------------------------ | ------------------------ |
+| /api/users                      | POST   | {     "userid":"another request",     "userpw":"request",     "userbirth":"2020-11-04 17:25:25",     "usergender":"26"     } | 회원가입                 |
+| /api/sprint/{userId}            | GET    |                                                              | 스프린트 리스트 가져오기 |
+| /api/sprint/{userId}            | POST   |                                                              | 스프린트 생성하기        |
+| /api/marathon/{userid}          | GET    | {           "maraton_id":2           "purpose":"취미생활"           "color":"yellow"           "startDate":"2020-01-01"     } | 마라톤 목록 불러오기     |
+| /api/marathonTask/{{maraton_id} | GET    |                                                              | 마라톤의 할일 불러오기   |
+| /api/marathon/{userid}          | POST   |                                                              | 마라톤 생성하기          |
+
+
 
 ## 핵심 기능
 
